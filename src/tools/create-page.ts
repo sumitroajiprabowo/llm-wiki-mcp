@@ -1,4 +1,4 @@
-import type { WikiManager } from "../core/wiki-manager.js";
+import type { WikiManager } from '../core/wiki-manager.js';
 
 interface CreatePageInput {
   title: string;
@@ -8,7 +8,7 @@ interface CreatePageInput {
 
 export async function handleCreatePage(
   input: CreatePageInput,
-  wikiManager: WikiManager
+  wikiManager: WikiManager,
 ): Promise<{ success: boolean; path: string; message: string }> {
   return wikiManager.createPage(input.title, input.content, input.pageType);
 }

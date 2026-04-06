@@ -1,11 +1,11 @@
-import { parseArgs } from "node:util";
-import { resolve } from "node:path";
-import { existsSync } from "node:fs";
-import { StdioServerTransport } from "@modelcontextprotocol/server";
-import { createServer } from "./server.js";
-import { handleInit } from "./tools/init.js";
+import { parseArgs } from 'node:util';
+import { resolve } from 'node:path';
+import { existsSync } from 'node:fs';
+import { StdioServerTransport } from '@modelcontextprotocol/server';
+import { createServer } from './server.js';
+import { handleInit } from './tools/init.js';
 
-const VERSION = "0.1.0";
+const VERSION = '0.1.0';
 
 const HELP = `llm-wiki-mcp v${VERSION}
 MCP server for building and maintaining LLM-powered knowledge wikis.
@@ -31,11 +31,11 @@ Documentation: https://github.com/sumitroajiprabowo/llm-wiki-mcp`;
 async function main() {
   const { values, positionals } = parseArgs({
     options: {
-      vault: { type: "string", short: "v" },
-      transport: { type: "string", short: "t", default: "stdio" },
-      port: { type: "string", short: "p", default: "3000" },
-      help: { type: "boolean" },
-      version: { type: "boolean" },
+      vault: { type: 'string', short: 'v' },
+      transport: { type: 'string', short: 't', default: 'stdio' },
+      port: { type: 'string', short: 'p', default: '3000' },
+      help: { type: 'boolean' },
+      version: { type: 'boolean' },
     },
     allowPositionals: true,
     strict: false,
@@ -51,8 +51,8 @@ async function main() {
     process.exit(0);
   }
 
-  if (positionals[0] === "init") {
-    const initPath = resolve(positionals[1] ?? ".");
+  if (positionals[0] === 'init') {
+    const initPath = resolve(positionals[1] ?? '.');
     const result = await handleInit({ path: initPath });
     console.log(result.message);
     for (const f of result.created) {
@@ -61,8 +61,8 @@ async function main() {
     process.exit(0);
   }
 
-  const vaultPath = resolve(String(values.vault ?? "."));
-  const transportType = String(values.transport ?? "stdio");
+  const vaultPath = resolve(String(values.vault ?? '.'));
+  const transportType = String(values.transport ?? 'stdio');
 
   if (!existsSync(vaultPath)) {
     console.error(`Error: vault path does not exist: ${vaultPath}`);
@@ -70,36 +70,36 @@ async function main() {
     process.exit(1);
   }
 
-  if (transportType === "stdio") {
+  if (transportType === 'stdio') {
     const server = await createServer({ vaultPath });
     const transport = new StdioServerTransport();
     await server.connect(transport);
     console.error(`llm-wiki-mcp running (stdio) — vault: ${vaultPath}`);
-  } else if (transportType === "sse" || transportType === "http") {
-    const port = parseInt(String(values.port ?? "3000"), 10);
+  } else if (transportType === 'sse' || transportType === 'http') {
+    const port = parseInt(String(values.port ?? '3000'), 10);
 
-    const { createServer: createHttpServer } = await import("node:http");
-    const { NodeStreamableHTTPServerTransport } = await import("@modelcontextprotocol/node");
-    const { isInitializeRequest } = await import("@modelcontextprotocol/server");
-    const { randomUUID } = await import("node:crypto");
+    const { createServer: createHttpServer } = await import('node:http');
+    const { NodeStreamableHTTPServerTransport } = await import('@modelcontextprotocol/node');
+    const { isInitializeRequest } = await import('@modelcontextprotocol/server');
+    const { randomUUID } = await import('node:crypto');
 
     const transports: Record<string, InstanceType<typeof NodeStreamableHTTPServerTransport>> = {};
 
     const httpServer = createHttpServer(async (req, res) => {
-      if (req.url !== "/mcp") {
+      if (req.url !== '/mcp') {
         res.writeHead(404);
-        res.end("Not found");
+        res.end('Not found');
         return;
       }
 
-      if (req.method === "POST") {
+      if (req.method === 'POST') {
         const chunks: Buffer[] = [];
         for await (const chunk of req) {
           chunks.push(chunk as Buffer);
         }
         const body = JSON.parse(Buffer.concat(chunks).toString());
 
-        const sessionId = req.headers["mcp-session-id"] as string | undefined;
+        const sessionId = req.headers['mcp-session-id'] as string | undefined;
 
         if (sessionId && transports[sessionId]) {
           await transports[sessionId].handleRequest(req, res, body);
@@ -126,28 +126,32 @@ async function main() {
           return;
         }
 
-        res.writeHead(400, { "Content-Type": "application/json" });
-        res.end(JSON.stringify({
-          jsonrpc: "2.0",
-          error: { code: -32000, message: "Invalid session" },
-          id: null,
-        }));
-      } else if (req.method === "GET") {
-        const sessionId = req.headers["mcp-session-id"] as string;
+        res.writeHead(400, { 'Content-Type': 'application/json' });
+        res.end(
+          JSON.stringify({
+            jsonrpc: '2.0',
+            error: { code: -32000, message: 'Invalid session' },
+            id: null,
+          }),
+        );
+      } else if (req.method === 'GET') {
+        const sessionId = req.headers['mcp-session-id'] as string;
         if (sessionId && transports[sessionId]) {
           await transports[sessionId].handleRequest(req, res);
         } else {
           res.writeHead(400);
-          res.end("Invalid session");
+          res.end('Invalid session');
         }
       } else {
         res.writeHead(405);
-        res.end("Method not allowed");
+        res.end('Method not allowed');
       }
     });
 
-    httpServer.listen(port, "127.0.0.1", () => {
-      console.error(`llm-wiki-mcp running (http) — vault: ${vaultPath} — http://127.0.0.1:${port}/mcp`);
+    httpServer.listen(port, '127.0.0.1', () => {
+      console.error(
+        `llm-wiki-mcp running (http) — vault: ${vaultPath} — http://127.0.0.1:${port}/mcp`,
+      );
     });
   } else {
     console.error(`Unknown transport: ${transportType}. Use "stdio" or "http".`);
@@ -156,6 +160,6 @@ async function main() {
 }
 
 main().catch((err) => {
-  console.error("Fatal:", err);
+  console.error('Fatal:', err);
   process.exit(1);
 });

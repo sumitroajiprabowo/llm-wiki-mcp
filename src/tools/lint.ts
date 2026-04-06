@@ -1,11 +1,11 @@
-import { readdirSync, readFileSync, existsSync } from "node:fs";
-import { join } from "node:path";
-import matter from "gray-matter";
-import type { WikiSchema } from "../config/types.js";
-import type { LinkResolver } from "../core/link-resolver.js";
+import { readdirSync, readFileSync, existsSync } from 'node:fs';
+import { join } from 'node:path';
+import matter from 'gray-matter';
+import type { WikiSchema } from '../config/types.js';
+import type { LinkResolver } from '../core/link-resolver.js';
 
 interface LintInput {
-  scope?: "full" | "recent";
+  scope?: 'full' | 'recent';
 }
 
 interface BrokenLink {
@@ -25,7 +25,7 @@ export async function handleLint(
   input: LintInput,
   vaultPath: string,
   schema: WikiSchema,
-  linkResolver: LinkResolver
+  linkResolver: LinkResolver,
 ): Promise<LintOutput> {
   const wikiDir = join(vaultPath, schema.paths.wiki);
 
@@ -40,7 +40,7 @@ export async function handleLint(
   }
 
   const files = readdirSync(wikiDir)
-    .filter((f) => f.endsWith(".md"))
+    .filter((f) => f.endsWith('.md'))
     .map((f) => `${schema.paths.wiki}/${f}`);
 
   const titleToPath = new Map<string, string>();
@@ -51,10 +51,10 @@ export async function handleLint(
 
   for (const file of files) {
     const absPath = join(vaultPath, file);
-    const raw = readFileSync(absPath, "utf-8");
+    const raw = readFileSync(absPath, 'utf-8');
     const parsed = matter(raw);
 
-    const title = (parsed.data.title as string) ?? file.replace(/.*\//, "").replace(".md", "");
+    const title = (parsed.data.title as string) ?? file.replace(/.*\//, '').replace('.md', '');
     titleToPath.set(title, file);
     pathToTitle.set(file, title);
 
@@ -80,7 +80,7 @@ export async function handleLint(
 
   for (const file of files) {
     const absPath = join(vaultPath, file);
-    const raw = readFileSync(absPath, "utf-8");
+    const raw = readFileSync(absPath, 'utf-8');
     const links = linkResolver.parseLinks(raw);
 
     for (const link of links) {
@@ -92,9 +92,9 @@ export async function handleLint(
   }
 
   const staleIndexEntries: string[] = [];
-  const indexPath = join(vaultPath, "index.md");
+  const indexPath = join(vaultPath, 'index.md');
   if (existsSync(indexPath)) {
-    const indexContent = readFileSync(indexPath, "utf-8");
+    const indexContent = readFileSync(indexPath, 'utf-8');
     const indexLinks = linkResolver.parseLinks(indexContent);
     for (const link of indexLinks) {
       if (!titleToPath.has(link.target)) {

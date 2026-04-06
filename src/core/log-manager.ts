@@ -1,21 +1,21 @@
 // src/core/log-manager.ts
-import { readFileSync, writeFileSync, existsSync, appendFileSync } from "node:fs";
-import { join } from "node:path";
-import type { LogEntry, LogFilter } from "../config/types.js";
+import { readFileSync, writeFileSync, existsSync, appendFileSync } from 'node:fs';
+import { join } from 'node:path';
+import type { LogEntry, LogFilter } from '../config/types.js';
 
-const LOG_HEADER = "# Wiki Log\n";
+const LOG_HEADER = '# Wiki Log\n';
 const ENTRY_REGEX = /^## \[(\d{4}-\d{2}-\d{2})\] (\w+) \| (.+)$/;
 
 export class LogManager {
   private logPath: string;
 
   constructor(vaultPath: string) {
-    this.logPath = join(vaultPath, "log.md");
+    this.logPath = join(vaultPath, 'log.md');
   }
 
   async append(entry: LogEntry): Promise<void> {
     if (!existsSync(this.logPath)) {
-      writeFileSync(this.logPath, LOG_HEADER + "\n", "utf-8");
+      writeFileSync(this.logPath, LOG_HEADER + '\n', 'utf-8');
     }
 
     let block = `\n## [${entry.date}] ${entry.operation} | ${entry.title}\n`;
@@ -23,7 +23,7 @@ export class LogManager {
       block += `${entry.details}\n`;
     }
 
-    appendFileSync(this.logPath, block, "utf-8");
+    appendFileSync(this.logPath, block, 'utf-8');
   }
 
   async read(filter?: LogFilter): Promise<LogEntry[]> {
@@ -31,8 +31,8 @@ export class LogManager {
       return [];
     }
 
-    const content = readFileSync(this.logPath, "utf-8");
-    const lines = content.split("\n");
+    const content = readFileSync(this.logPath, 'utf-8');
+    const lines = content.split('\n');
     const entries: LogEntry[] = [];
     let current: LogEntry | null = null;
     const detailLines: string[] = [];
@@ -40,7 +40,7 @@ export class LogManager {
     const flushCurrent = () => {
       if (current) {
         if (detailLines.length > 0) {
-          current.details = detailLines.join("\n").trim() || undefined;
+          current.details = detailLines.join('\n').trim() || undefined;
         }
         entries.push(current);
         detailLines.length = 0;
@@ -56,7 +56,7 @@ export class LogManager {
           operation: match[2],
           title: match[3],
         };
-      } else if (current && line.trim() !== "" && !line.startsWith("# ")) {
+      } else if (current && line.trim() !== '' && !line.startsWith('# ')) {
         detailLines.push(line);
       }
     }

@@ -1,12 +1,12 @@
-import { mkdirSync, writeFileSync, existsSync } from "node:fs";
-import { join } from "node:path";
-import yaml from "js-yaml";
-import { DEFAULT_SCHEMA, type WikiSchema } from "../config/types.js";
+import { mkdirSync, writeFileSync, existsSync } from 'node:fs';
+import { join } from 'node:path';
+import yaml from 'js-yaml';
+import { DEFAULT_SCHEMA, type WikiSchema } from '../config/types.js';
 
 interface InitInput {
   path: string;
   name?: string;
-  linkStyle?: "wikilink" | "markdown";
+  linkStyle?: 'wikilink' | 'markdown';
 }
 
 interface InitOutput {
@@ -17,12 +17,12 @@ interface InitOutput {
 
 export async function handleInit(input: InitInput): Promise<InitOutput> {
   const { path: vaultPath, name, linkStyle } = input;
-  const schemaPath = join(vaultPath, ".wiki-schema.yaml");
+  const schemaPath = join(vaultPath, '.wiki-schema.yaml');
 
   if (existsSync(schemaPath)) {
     return {
       success: true,
-      message: "Vault already initialized — skipping without overwrite.",
+      message: 'Vault already initialized — skipping without overwrite.',
       created: [],
     };
   }
@@ -41,26 +41,26 @@ export async function handleInit(input: InitInput): Promise<InitOutput> {
     const absDir = join(vaultPath, dir);
     if (!existsSync(absDir)) {
       mkdirSync(absDir, { recursive: true });
-      created.push(dir + "/");
+      created.push(dir + '/');
     }
   }
 
   const yamlContent = yaml.dump(schema, { lineWidth: -1 });
-  writeFileSync(schemaPath, yamlContent, "utf-8");
-  created.push(".wiki-schema.yaml");
+  writeFileSync(schemaPath, yamlContent, 'utf-8');
+  created.push('.wiki-schema.yaml');
 
-  const indexPath = join(vaultPath, "index.md");
+  const indexPath = join(vaultPath, 'index.md');
   if (!existsSync(indexPath)) {
-    writeFileSync(indexPath, "# Wiki Index\n", "utf-8");
-    created.push("index.md");
+    writeFileSync(indexPath, '# Wiki Index\n', 'utf-8');
+    created.push('index.md');
   }
 
-  const logPath = join(vaultPath, "log.md");
+  const logPath = join(vaultPath, 'log.md');
   if (!existsSync(logPath)) {
     const today = new Date().toISOString().slice(0, 10);
     const logContent = `# Wiki Log\n\n## [${today}] init | ${schema.name}\nVault initialized.\n`;
-    writeFileSync(logPath, logContent, "utf-8");
-    created.push("log.md");
+    writeFileSync(logPath, logContent, 'utf-8');
+    created.push('log.md');
   }
 
   return {

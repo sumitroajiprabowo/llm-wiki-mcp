@@ -1,11 +1,11 @@
-import { McpServer } from "@modelcontextprotocol/server";
-import { loadSchema } from "./config/schema-loader.js";
-import { LinkResolver } from "./core/link-resolver.js";
-import { LogManager } from "./core/log-manager.js";
-import { IndexManager } from "./core/index-manager.js";
-import { WikiManager } from "./core/wiki-manager.js";
-import { detectSearchProvider } from "./search/detect.js";
-import { registerTools } from "./tools/index.js";
+import { McpServer } from '@modelcontextprotocol/server';
+import { loadSchema } from './config/schema-loader.js';
+import { LinkResolver } from './core/link-resolver.js';
+import { LogManager } from './core/log-manager.js';
+import { IndexManager } from './core/index-manager.js';
+import { WikiManager } from './core/wiki-manager.js';
+import { detectSearchProvider } from './search/detect.js';
+import { registerTools } from './tools/index.js';
 
 export interface ServerConfig {
   vaultPath: string;
@@ -22,8 +22,8 @@ export async function createServer(config: ServerConfig): Promise<McpServer> {
   const searchProvider = await detectSearchProvider();
 
   const server = new McpServer({
-    name: "llm-wiki-mcp",
-    version: "0.1.0",
+    name: 'llm-wiki-mcp',
+    version: '0.1.0',
   });
 
   registerTools(server, {

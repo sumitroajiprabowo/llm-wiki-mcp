@@ -1,11 +1,11 @@
-import { readdirSync, readFileSync } from "node:fs";
-import { join } from "node:path";
-import matter from "gray-matter";
-import type { SearchResult, SearchOptions } from "../config/types.js";
-import type { SearchProvider } from "./search-provider.js";
+import { readdirSync, readFileSync } from 'node:fs';
+import { join } from 'node:path';
+import matter from 'gray-matter';
+import type { SearchResult, SearchOptions } from '../config/types.js';
+import type { SearchProvider } from './search-provider.js';
 
 export class SimpleProvider implements SearchProvider {
-  name = "simple";
+  name = 'simple';
 
   async available(): Promise<boolean> {
     return true;
@@ -21,19 +21,19 @@ export class SimpleProvider implements SearchProvider {
 
     if (terms.length === 0) return [];
 
-    const files = readdirSync(wikiDir).filter((f) => f.endsWith(".md"));
+    const files = readdirSync(wikiDir).filter((f) => f.endsWith('.md'));
     const scored: SearchResult[] = [];
 
     for (const file of files) {
       const absPath = join(wikiDir, file);
-      const raw = readFileSync(absPath, "utf-8");
+      const raw = readFileSync(absPath, 'utf-8');
       const parsed = matter(raw);
-      const title = (parsed.data.title as string) ?? file.replace(".md", "");
+      const title = (parsed.data.title as string) ?? file.replace('.md', '');
       const body = parsed.content.toLowerCase();
       const titleLower = title.toLowerCase();
 
       let score = 0;
-      let matchedSnippet = "";
+      let matchedSnippet = '';
 
       for (const term of terms) {
         if (titleLower.includes(term)) {

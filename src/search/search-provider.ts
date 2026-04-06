@@ -1,4 +1,4 @@
-import type { SearchResult, SearchOptions } from "../config/types.js";
+import type { SearchResult, SearchOptions } from '../config/types.js';
 
 export interface SearchProvider {
   name: string;

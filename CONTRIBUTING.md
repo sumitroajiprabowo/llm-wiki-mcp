@@ -1,4 +1,4 @@
-# Contributing to wiki-mcp
+# Contributing to llm-wiki-mcp
 
 ## Prerequisites
 
@@ -8,8 +8,8 @@
 ## Dev Setup
 
 ```bash
-git clone https://github.com/sumitroajiprabowo/wiki-mcp.git
-cd wiki-mcp
+git clone https://github.com/sumitroajiprabowo/llm-wiki-mcp.git
+cd llm-wiki-mcp
 npm install
 npm run build
 ```

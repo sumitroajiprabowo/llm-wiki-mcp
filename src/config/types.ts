@@ -1,7 +1,7 @@
 export interface WikiSchema {
   name: string;
   version: number;
-  linkStyle: "wikilink" | "markdown";
+  linkStyle: 'wikilink' | 'markdown';
   paths: {
     raw: string;
     wiki: string;
@@ -67,30 +67,30 @@ export interface PageData {
 }
 
 export const DEFAULT_SCHEMA: WikiSchema = {
-  name: "My Wiki",
+  name: 'My Wiki',
   version: 1,
-  linkStyle: "wikilink",
+  linkStyle: 'wikilink',
   paths: {
-    raw: "raw",
-    wiki: "wiki",
-    assets: "raw/assets",
+    raw: 'raw',
+    wiki: 'wiki',
+    assets: 'raw/assets',
   },
   pageTypes: {
     source: {
-      description: "Summary of a raw source document",
-      requiredFields: ["title", "type", "source_path", "created"],
+      description: 'Summary of a raw source document',
+      requiredFields: ['title', 'type', 'source_path', 'created'],
     },
     concept: {
-      description: "A concept or idea",
-      requiredFields: ["title", "type", "tags", "created"],
+      description: 'A concept or idea',
+      requiredFields: ['title', 'type', 'tags', 'created'],
     },
     entity: {
-      description: "A person, organization, or thing",
-      requiredFields: ["title", "type", "tags", "created"],
+      description: 'A person, organization, or thing',
+      requiredFields: ['title', 'type', 'tags', 'created'],
     },
     comparison: {
-      description: "Comparison between concepts/entities",
-      requiredFields: ["title", "type", "subjects", "created"],
+      description: 'Comparison between concepts/entities',
+      requiredFields: ['title', 'type', 'subjects', 'created'],
     },
   },
   tags: {
@@ -98,6 +98,6 @@ export const DEFAULT_SCHEMA: WikiSchema = {
     suggested: [],
   },
   log: {
-    prefix: "## [{date}] {operation} | {title}",
+    prefix: '## [{date}] {operation} | {title}',
   },
 };

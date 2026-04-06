@@ -5,6 +5,12 @@
   "type": "module",
   "main": "dist/server.js",
   "types": "dist/server.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/server.js",
+      "types": "./dist/server.d.ts"
+    }
+  },
   "bin": {
     "llm-wiki-mcp": "dist/cli.js"
   },
@@ -14,16 +20,24 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "lint": "tsc --noEmit",
-    "prepublishOnly": "npm run lint && npm test && npm run build"
+    "lint": "eslint src/ tests/",
+    "format": "prettier --write src/ tests/",
+    "format:check": "prettier --check src/ tests/",
+    "type-check": "tsc --noEmit",
+    "prepublishOnly": "npm run type-check && npm run lint && npm test && npm run build"
   },
   "keywords": [
     "mcp",
+    "mcp-server",
     "wiki",
     "llm",
     "knowledge-base",
-    "obsidian"
+    "knowledge-management",
+    "obsidian",
+    "claude",
+    "markdown"
   ],
+  "author": "Sumitro Aji Prabowo",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -54,8 +68,12 @@
     "@types/js-yaml": "^4.0.9",
     "@types/node": "^25.5.2",
     "@vitest/coverage-v8": "^4.1.2",
+    "eslint": "^9.39.4",
+    "eslint-config-prettier": "^10.1.8",
+    "prettier": "^3.8.1",
     "tsup": "^8.5.1",
     "typescript": "^6.0.2",
+    "typescript-eslint": "^8.58.0",
     "vitest": "^4.1.2"
   }
 }

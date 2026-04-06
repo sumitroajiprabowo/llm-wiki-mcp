@@ -1,5 +1,5 @@
-import type { WikiManager } from "../core/wiki-manager.js";
-import type { PageData } from "../config/types.js";
+import type { WikiManager } from '../core/wiki-manager.js';
+import type { PageData } from '../config/types.js';
 
 interface ReadPageInput {
   title?: string;
@@ -8,7 +8,7 @@ interface ReadPageInput {
 
 export async function handleReadPage(
   input: ReadPageInput,
-  wikiManager: WikiManager
+  wikiManager: WikiManager,
 ): Promise<PageData> {
   return wikiManager.readPage(input);
 }
