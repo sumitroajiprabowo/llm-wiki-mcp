@@ -47,13 +47,13 @@ Works with [Obsidian](https://obsidian.md/) — the LLM edits files, you browse 
 Initialize a new vault:
 
 ```bash
-npx wiki-mcp init ./my-wiki
+npx llm-wiki-mcp init ./my-wiki
 ```
 
 Run the server (stdio transport, for Claude Desktop / MCP clients):
 
 ```bash
-npx wiki-mcp --vault ./my-wiki
+npx llm-llm-wiki-mcp --vault ./my-wiki
 ```
 
 ### Claude Desktop Configuration
@@ -63,9 +63,9 @@ Add to your Claude Desktop `claude_desktop_config.json`:
 ```json
 {
   "mcpServers": {
-    "wiki-mcp": {
+    "llm-wiki-mcp": {
       "command": "npx",
-      "args": ["wiki-mcp", "--vault", "/absolute/path/to/your/vault"]
+      "args": ["llm-wiki-mcp", "--vault", "/absolute/path/to/your/vault"]
     }
   }
 }
@@ -89,13 +89,13 @@ Add to your Claude Desktop `claude_desktop_config.json`:
 **stdio** (default) -- for Claude Desktop and other MCP clients:
 
 ```bash
-wiki-mcp --vault ./my-wiki
+llm-wiki-mcp --vault ./my-wiki
 ```
 
 **HTTP** (Streamable HTTP) -- for web-based clients:
 
 ```bash
-wiki-mcp --vault ./my-wiki --transport http --port 3000
+llm-wiki-mcp --vault ./my-wiki --transport http --port 3000
 ```
 
 The HTTP transport serves an MCP-compliant Streamable HTTP endpoint at `http://127.0.0.1:3000/mcp`.

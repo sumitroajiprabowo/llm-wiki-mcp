@@ -22,7 +22,7 @@ export async function createServer(config: ServerConfig): Promise<McpServer> {
   const searchProvider = await detectSearchProvider();
 
   const server = new McpServer({
-    name: "wiki-mcp",
+    name: "llm-wiki-mcp",
     version: "0.1.0",
   });
 

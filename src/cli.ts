@@ -7,12 +7,12 @@ import { handleInit } from "./tools/init.js";
 
 const VERSION = "0.1.0";
 
-const HELP = `wiki-mcp v${VERSION}
+const HELP = `llm-wiki-mcp v${VERSION}
 MCP server for building and maintaining LLM-powered knowledge wikis.
 
 Usage:
-  wiki-mcp [options]          Start the MCP server
-  wiki-mcp init [path]        Initialize a new wiki vault
+  llm-wiki-mcp [options]          Start the MCP server
+  llm-wiki-mcp init [path]        Initialize a new wiki vault
 
 Options:
   -v, --vault <path>          Path to wiki vault (default: current directory)
@@ -22,11 +22,11 @@ Options:
   --version                   Show version number
 
 Examples:
-  wiki-mcp init ~/my-wiki
-  wiki-mcp --vault ~/my-wiki
-  wiki-mcp --vault ~/my-wiki --transport http --port 3000
+  llm-wiki-mcp init ~/my-wiki
+  llm-wiki-mcp --vault ~/my-wiki
+  llm-wiki-mcp --vault ~/my-wiki --transport http --port 3000
 
-Documentation: https://github.com/sumitroajiprabowo/wiki-mcp`;
+Documentation: https://github.com/sumitroajiprabowo/llm-wiki-mcp`;
 
 async function main() {
   const { values, positionals } = parseArgs({
@@ -66,7 +66,7 @@ async function main() {
 
   if (!existsSync(vaultPath)) {
     console.error(`Error: vault path does not exist: ${vaultPath}`);
-    console.error(`Run "wiki-mcp init ${vaultPath}" to create a new vault.`);
+    console.error(`Run "llm-wiki-mcp init ${vaultPath}" to create a new vault.`);
     process.exit(1);
   }
 
@@ -74,7 +74,7 @@ async function main() {
     const server = await createServer({ vaultPath });
     const transport = new StdioServerTransport();
     await server.connect(transport);
-    console.error(`wiki-mcp running (stdio) — vault: ${vaultPath}`);
+    console.error(`llm-wiki-mcp running (stdio) — vault: ${vaultPath}`);
   } else if (transportType === "sse" || transportType === "http") {
     const port = parseInt(String(values.port ?? "3000"), 10);
 
@@ -147,7 +147,7 @@ async function main() {
     });
 
     httpServer.listen(port, "127.0.0.1", () => {
-      console.error(`wiki-mcp running (http) — vault: ${vaultPath} — http://127.0.0.1:${port}/mcp`);
+      console.error(`llm-wiki-mcp running (http) — vault: ${vaultPath} — http://127.0.0.1:${port}/mcp`);
     });
   } else {
     console.error(`Unknown transport: ${transportType}. Use "stdio" or "http".`);

@@ -1,12 +1,12 @@
 {
-  "name": "wiki-mcp",
+  "name": "llm-wiki-mcp",
   "version": "0.1.0",
   "description": "MCP server for building and maintaining LLM-powered knowledge wikis",
   "type": "module",
   "main": "dist/server.js",
   "types": "dist/server.d.ts",
   "bin": {
-    "wiki-mcp": "dist/cli.js"
+    "llm-wiki-mcp": "dist/cli.js"
   },
   "scripts": {
     "build": "tsup",
