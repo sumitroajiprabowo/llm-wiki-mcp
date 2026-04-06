@@ -23,6 +23,19 @@
     "obsidian"
   ],
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sumitroajiprabowo/wiki-mcp.git"
+  },
+  "homepage": "https://github.com/sumitroajiprabowo/wiki-mcp#readme",
+  "bugs": {
+    "url": "https://github.com/sumitroajiprabowo/wiki-mcp/issues"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
   "engines": {
     "node": ">=18"
   },
