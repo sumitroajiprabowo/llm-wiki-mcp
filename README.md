@@ -36,70 +36,19 @@ The LLM Wiki pattern is different. Instead of retrieving from raw documents, the
 
 ### When to Use This
 
-llm-wiki-mcp shines when knowledge is **large, scattered, and evolving** — where no single person holds the full picture and information decays without active maintenance.
+llm-wiki-mcp works best when knowledge is **scattered, evolving, and too large for one person to hold** — where information decays without active maintenance.
 
-**Best fit:**
-- Codebases with many modules, services, or domains
-- Projects where onboarding takes weeks because context lives in people's heads
-- Teams drowning in docs that are always out of date
-
-**Not needed for:**
-- Small libraries or single-purpose tools — a good README is enough
-- Codebases where the code itself is the documentation
+**Best fit:** many sources, many connections, knowledge that changes over time.
+**Not needed:** small projects where a single README is enough.
 
 ### Use Cases
 
-#### Software Development (Large / Microservices)
-
-A platform with 10+ services has knowledge scattered across READMEs, Confluence pages, Slack threads, and people's heads. The wiki becomes the single source of truth:
-
-```
-raw/                                    wiki/
-  architecture-rfc-2024.md        →       wiki/payment-service.md
-  postmortem-2024-03-checkout.md  →       wiki/checkout-flow.md
-  api-contracts-v3.md             →       wiki/api-versioning.md
-  onboarding-notes-new-dev.md     →       wiki/authentication.md
-                                          wiki/database-migration-patterns.md
-                                          wiki/service-dependencies.md
-```
-
-**What compounds:**
-- Ingest a postmortem → wiki auto-updates the relevant service page with "known issues", links to the incident, and flags affected services
-- Ingest a new API contract → wiki updates all service pages that consume that API, notes breaking changes, links to migration guide
-- New developer asks "how does checkout work?" → wiki already has the synthesized answer across 5 services, not fragments across 12 documents
-
-**Example conversation:**
-```
-You:    "Ingest this postmortem about the payment timeout incident"
-LLM:    Creates source page, updates Payment Service with known issues,
-        updates Checkout Flow with timeout handling notes,
-        adds cross-reference to Database Migration Patterns
-        (because the root cause was a missing index)
-
-You:    "Which services are affected if we change the auth token format?"
-LLM:    Searches wiki, finds 4 service pages referencing auth tokens,
-        returns a comparison table with impact analysis
-```
-
-#### Research & Deep Dives
-
-Papers, articles, reports building into a comprehensive wiki with an evolving thesis.
-
-#### Reading a Book
-
-Chapter-by-chapter, building pages for characters, themes, plot threads — like a personal fan wiki.
-
-#### Business / Team Knowledge
-
-Slack threads, meeting transcripts, customer calls, RFCs, postmortems — maintained by LLM so the wiki stays current even when the team doesn't have time.
-
-#### Personal Knowledge
-
-Goals, health, self-improvement, journal entries structured over time.
-
-#### Other
-
-Competitive analysis, due diligence, trip planning, course notes, hobby deep-dives — anything where knowledge accumulates and connections matter.
+- **Research** — papers, articles, reports building into a comprehensive wiki with an evolving thesis
+- **Software projects** — architecture docs, RFCs, postmortems, API contracts across many modules — the wiki stays current even when no one has time to update it
+- **Reading a book** — chapter-by-chapter, building pages for characters, themes, plot threads
+- **Business/team** — Slack threads, meeting transcripts, customer calls maintained by LLM
+- **Personal** — goals, health, self-improvement, journal entries structured over time
+- **Competitive analysis, due diligence, trip planning, course notes, hobby deep-dives**
 
 ### Why It Works
 
