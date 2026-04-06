@@ -1,8 +1,32 @@
 import { parseArgs } from "node:util";
 import { resolve } from "node:path";
+import { existsSync } from "node:fs";
 import { StdioServerTransport } from "@modelcontextprotocol/server";
 import { createServer } from "./server.js";
 import { handleInit } from "./tools/init.js";
+
+const VERSION = "0.1.0";
+
+const HELP = `wiki-mcp v${VERSION}
+MCP server for building and maintaining LLM-powered knowledge wikis.
+
+Usage:
+  wiki-mcp [options]          Start the MCP server
+  wiki-mcp init [path]        Initialize a new wiki vault
+
+Options:
+  -v, --vault <path>          Path to wiki vault (default: current directory)
+  -t, --transport <type>      Transport: "stdio" or "http" (default: stdio)
+  -p, --port <number>         Port for HTTP transport (default: 3000)
+  --help                      Show this help message
+  --version                   Show version number
+
+Examples:
+  wiki-mcp init ~/my-wiki
+  wiki-mcp --vault ~/my-wiki
+  wiki-mcp --vault ~/my-wiki --transport http --port 3000
+
+Documentation: https://github.com/sumitroajiprabowo/wiki-mcp`;
 
 async function main() {
   const { values, positionals } = parseArgs({
@@ -10,10 +34,22 @@ async function main() {
       vault: { type: "string", short: "v" },
       transport: { type: "string", short: "t", default: "stdio" },
       port: { type: "string", short: "p", default: "3000" },
+      help: { type: "boolean" },
+      version: { type: "boolean" },
     },
     allowPositionals: true,
     strict: false,
   });
+
+  if (values.help) {
+    console.log(HELP);
+    process.exit(0);
+  }
+
+  if (values.version) {
+    console.log(VERSION);
+    process.exit(0);
+  }
 
   if (positionals[0] === "init") {
     const initPath = resolve(positionals[1] ?? ".");
@@ -27,6 +63,12 @@ async function main() {
 
   const vaultPath = resolve(String(values.vault ?? "."));
   const transportType = String(values.transport ?? "stdio");
+
+  if (!existsSync(vaultPath)) {
+    console.error(`Error: vault path does not exist: ${vaultPath}`);
+    console.error(`Run "wiki-mcp init ${vaultPath}" to create a new vault.`);
+    process.exit(1);
+  }
 
   if (transportType === "stdio") {
     const server = await createServer({ vaultPath });
