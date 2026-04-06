@@ -1,0 +1,20 @@
+name: "Personal Wiki"
+version: 1
+linkStyle: "markdown"
+paths:
+  raw: "raw"
+  wiki: "wiki"
+  assets: "raw/assets"
+pageTypes:
+  source:
+    description: "Notes from a book, article, or podcast"
+    requiredFields: [title, type, source_path, created]
+  concept:
+    description: "An idea or topic"
+    requiredFields: [title, type, tags, created]
+  entity:
+    description: "A person, place, or thing"
+    requiredFields: [title, type, tags, created]
+  comparison:
+    description: "Comparison or decision log"
+    requiredFields: [title, type, subjects, created]

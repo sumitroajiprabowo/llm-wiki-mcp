@@ -1,0 +1,20 @@
+name: "Research Wiki"
+version: 1
+linkStyle: "wikilink"
+paths:
+  raw: "raw"
+  wiki: "wiki"
+  assets: "raw/assets"
+pageTypes:
+  source:
+    description: "Summary of a research paper or article"
+    requiredFields: [title, type, source_path, created]
+  concept:
+    description: "A research concept or technique"
+    requiredFields: [title, type, tags, created]
+  entity:
+    description: "A researcher, lab, or organization"
+    requiredFields: [title, type, tags, created]
+  comparison:
+    description: "Comparison between approaches or methods"
+    requiredFields: [title, type, subjects, created]
